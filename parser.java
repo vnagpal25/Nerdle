@@ -10,7 +10,7 @@ public class parser {
   public static void main(String[] args) {
     ArrayList<String> allWords = new ArrayList<String>();
     try {
-      File inFile = new File("words.txt");
+      File inFile = new File("dictionary.txt");
       FileReader reader = new FileReader(inFile);
       Scanner scanner = new Scanner(reader);
 
@@ -28,7 +28,7 @@ public class parser {
     }
 
     try {
-      File outFile = new File("words.json");
+      File outFile = new File("dictionary.json");
       FileWriter writer = new FileWriter(outFile);
 
       writer.write("[");
