@@ -1,1 +1,1 @@
-# Vordle
+# Nerdle Game
