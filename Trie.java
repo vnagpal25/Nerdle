@@ -4,16 +4,16 @@
  *         Needed to implement dictionary for efficient lookups for logarithmic
  *         time complexity
  */
-public class DictionaryTrie {
-  private DictionaryTrie[] childNodes;// children nodes/sub-tries
+public class Trie {
+  private Trie[] childNodes;// children nodes/sub-tries
   private boolean validWord;// describing whether the path of nodes leading to it define a valid english
                             // word
 
   /**
    * Constructor
    */
-  public DictionaryTrie() {
-    this.childNodes = new DictionaryTrie[26];// 26 letters
+  public Trie() {
+    this.childNodes = new Trie[26];// 26 letters
     this.validWord = false; // by default false
   }
 
@@ -33,7 +33,7 @@ public class DictionaryTrie {
    * @param c the next character in the word
    * @return a sub-Trie with c as the root node
    */
-  public DictionaryTrie getChild(char c) {
+  public Trie getChild(char c) {
     return this.childNodes[c - 'a'];
   }
 
@@ -44,7 +44,7 @@ public class DictionaryTrie {
    */
   public void setChild(char c) {
     // giving the next character 26 children
-    this.childNodes[c - 'a'] = new DictionaryTrie();
+    this.childNodes[c - 'a'] = new Trie();
   }
 
   /**
