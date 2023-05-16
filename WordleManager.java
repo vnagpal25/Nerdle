@@ -7,21 +7,23 @@ import java.util.Map;
 public class WordleManager {
   public static final int MAX_GUESSES = 6;
 
-  private ArrayList<String> wordList = new ArrayList<String>();
+  private static ArrayList<String> wordList = new ArrayList<String>();
   private static ArrayList<String> guesses = new ArrayList<String>();
   private static HashMap<Character, Integer> letterCounts;
   private int randomIndex;
   private static String correctWord;
   private Random generator;
   private Scanner input;
+  private Dictionary dictionary;
 
   public WordleManager() {
-    wordList = DataLoader.loadWords();
+    wordList = JSONManager.getWords();
     generator = new Random();
     randomIndex = -1;
     correctWord = "";
     input = new Scanner(System.in);
     letterCounts = new HashMap<Character, Integer>();
+    dictionary = new Dictionary(JSONManager.getDictionary());
   }
 
   public void run() {
@@ -52,14 +54,10 @@ public class WordleManager {
         break;
       }
 
-      // the problem now is we need to somehow keep track of multiple of the same
-      // letters in a guess, it should not show up in yellow if the letter is in the
-      // correct spot in another location and also if it is the only occurrence of
-      // that letter in the word
+      if (wordList.contains(guess) || dictionary.isValidEnglishWord(guess)) {
+        if (!wordList.contains(guess) && dictionary.isValidEnglishWord(guess))
+          wordList.add(guess);
 
-      // make hashmap of word, each letter as the key, for value create a class called
-      // guess or number of occurences in word
-      if (wordList.contains(guess)) {
         for (int i = 0; i < correctWord.length(); i++) {
           // if the letter is in the correct spot
           if (inCorrectSpot(guess.charAt(i), i)) {
@@ -95,6 +93,7 @@ public class WordleManager {
       print(correctWord, ConsoleColor.GREEN);
     }
 
+    saveWords();
   }
 
   private static void printGuesses() {
@@ -121,5 +120,9 @@ public class WordleManager {
     // if its in the wrong spot it should be in the word, and it should also not be
     // the only occurence of the letter, aka count > 0
     return correctWord.contains(Character.toString(c)) && (letterCounts.get(c) > 0);
+  }
+
+  private static void saveWords() {
+    JSONManager.saveWords(wordList);
   }
 }
