@@ -1,3 +1,7 @@
+/**
+ * @author vnagpal
+ *         enum containing ansi escape codes, used for colored terminal output
+ */
 public enum ConsoleColor {
   RESET {
     public String toString() {
