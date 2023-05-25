@@ -1,25 +1,59 @@
-let quotesDiv = document.getElementById('quotes')
+//selects all input elements with the class specified by letter-input (which will be each individual box within each row)
+const letterInputs = document.querySelectorAll('.letter-input');
 
-//html GET request, res => res.json() converts response text to json
-//quote is a JSON object, \\
-fetch('https://api.kanye.rest')
-  .then(res => res.json())
-  .then(quote => {
-    //appends quote to be in the correct spot in the webpage, quote is the key also hence quote.quote
-    quotesDiv.innerHTML += `<p> ${quote.quote} </p>`
-  })
+//loops through each input element
+letterInputs.forEach(input => {
+  //listens for value being inputted into the box
+  input.addEventListener('input', function () {
+    //if the input length goes over 1, then it displays only the first characters
+    if (this.value.length > 1)
+      this.value = this.value[0];
 
+    // Remove non-alphabetic characters and converts letters to uppercase
+    /*regex: /[^a-zA-Z]/
+      []  : anything between here matches a single character [..][..] matches two characters 
+      /   : used to effectively bookmark the regex
+      ^   : specifies inversion (anything that doesn't match the following pattern)
+      a-z : specifies all lowercase letters
+      A-Z : specifies all uppercase letters
+      /g  : matches all occurences in the input string not the first one, redundant in this case
+    */
+    this.value = this.value.replace(/[^a-zA-Z]/g, '').toUpperCase();
+  });
+});
 
-let catButton = document.getElementById('give-cat')
-catButton.addEventListener("click", evt => {
-  let catDiv = document.getElementById('cat-pic')
+function handleInput(event) {
+  const input = event.target;//box in which value is being entered
+  const value = input.value;//character being entered in the box
 
-  fetch('https://pokeapi.co/api/v2/pokemon/ditto')
-  .then(res => res.json)
-  .then(pokemons => {
-    cats.forEach(pokemon => {
-      catDiv.innerHTML = `<h3>Here is this cat wishing you the bestest day </h3>
-      <img src = "${pokemon.url}" alt = "kitty" />`
-    })
-  })
-})
+  if (value.length === 1) {
+    const currentDiv = input.parentNode;
+    const rowInputs = Array.from(currentDiv.getElementsByClassName('letter-input'));
+
+    const nextBoxIndex = rowInputs.indexOf(currentInput) + 1;
+
+    if (nextBoxIndex < rowInputs.length) {
+      const nextBox = rowInputs[nextBoxIndex];
+      nextBox.focus();
+    }
+  }
+}
+
+function handleKeyDown(event) {
+  const key = event.key;
+  const input = event.target;
+  const currentDiv = input.parentNode;
+  const rowInputs = Array.from(currentDiv.getElementsByClassName('letter-input'));
+
+  switch (key) {
+    case 'Backspace':
+      const nextBoxIndex = rowInputs.indexOf(currentInput) - 1;
+      if (nextBoxIndex >= 0) {
+        const nextBox = rowInputs[nextBoxIndex];
+        nextBox.focus();
+      }
+      break;
+    default:
+      break;
+  }
+}

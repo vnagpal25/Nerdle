@@ -4,20 +4,93 @@
 <head>
   <meta charset="utf-8">
   <title>Nerdle</title>
-  <!--<link rel="stylesheet" href="styles.css">-->
+  <link rel="stylesheet" href="styles.css">
   <script defer src="index.js" charset="utf-8"></script>
+  <style>
+    h1 {
+      text-align: center;
+    }
+  </style>
 </head>
 
 <body>
-  <h1>Nerdle</h1>
-  <div id="quotes">
-    <!-- quote goes here-->
-  </div><br>
+  <h1>Nerd-le</h1>
+  <div class="input-boxes" id="row1">
+    <input type="text" id="letter1" class="letter-input" maxlength="1" oninput="handleInput(event, 1)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter2" class="letter-input" maxlength="1" oninput="handleInput(event, 2)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter3" class="letter-input" maxlength="1" oninput="handleInput(event, 3)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter4" class="letter-input" maxlength="1" oninput="handleInput(event, 4)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter5" class="letter-input" maxlength="1" oninput="handleInput(event, null)"
+      onkeydown="handleKeyDown(event)">
+  </div>
 
-  <button id="give-cat">I NEED A CAT!!</button>
+  <div class="input-boxes" id="row2">
+    <input type="text" id="letter1" class="letter-input" maxlength="1" oninput="handleInput(event, 1)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter2" class="letter-input" maxlength="1" oninput="handleInput(event, 2)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter3" class="letter-input" maxlength="1" oninput="handleInput(event, 3)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter4" class="letter-input" maxlength="1" oninput="handleInput(event, 4)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter5" class="letter-input" maxlength="1" oninput="handleInput(event, null)"
+      onkeydown="handleKeyDown(event)">
+  </div>
 
-  <div id = "cat-pic">
-    <!-- cat pic esta aqui-->
+  <div class="input-boxes" id="row3">
+    <input type="text" id="letter1" class="letter-input" maxlength="1" oninput="handleInput(event, 1)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter2" class="letter-input" maxlength="1" oninput="handleInput(event, 2)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter3" class="letter-input" maxlength="1" oninput="handleInput(event, 3)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter4" class="letter-input" maxlength="1" oninput="handleInput(event, 4)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter5" class="letter-input" maxlength="1" oninput="handleInput(event, null)"
+      onkeydown="handleKeyDown(event)">
+  </div>
+
+  <div class="input-boxes" id="row4">
+    <input type="text" id="letter1" class="letter-input" maxlength="1" oninput="handleInput(event, 1)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter2" class="letter-input" maxlength="1" oninput="handleInput(event, 2)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter3" class="letter-input" maxlength="1" oninput="handleInput(event, 3)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter4" class="letter-input" maxlength="1" oninput="handleInput(event, 4)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter5" class="letter-input" maxlength="1" oninput="handleInput(event, null)"
+      onkeydown="handleKeyDown(event)">
+  </div>
+
+  <div class="input-boxes" id="row5">
+    <input type="text" id="letter1" class="letter-input" maxlength="1" oninput="handleInput(event, 1)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter2" class="letter-input" maxlength="1" oninput="handleInput(event, 2)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter3" class="letter-input" maxlength="1" oninput="handleInput(event, 3)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter4" class="letter-input" maxlength="1" oninput="handleInput(event, 4)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter5" class="letter-input" maxlength="1" oninput="handleInput(event, null)"
+      onkeydown="handleKeyDown(event)">
+  </div>
+
+  <div class="input-boxes" id="row6">
+    <input type="text" id="letter1" class="letter-input" maxlength="1" oninput="handleInput(event, 1)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter2" class="letter-input" maxlength="1" oninput="handleInput(event, 2)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter3" class="letter-input" maxlength="1" oninput="handleInput(event, 3)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter4" class="letter-input" maxlength="1" oninput="handleInput(event, 4)"
+      onkeydown="handleKeyDown(event)">
+    <input type="text" id="letter5" class="letter-input" maxlength="1" oninput="handleInput(event, null)"
+      onkeydown="handleKeyDown(event)">
   </div>
 </body>
 
