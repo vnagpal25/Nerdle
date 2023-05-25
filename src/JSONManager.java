@@ -45,7 +45,7 @@ public class JSONManager {
    */
   private static void loadWords() {
     nerdleList = new ArrayList<String>();
-    loadFile(nerdleList, "words.json");
+    loadFile(nerdleList, "json/words.json");
   }
 
   /**
@@ -53,7 +53,7 @@ public class JSONManager {
    */
   private static void loadDictionary() {
     dictionaryList = new ArrayList<String>();
-    loadFile(dictionaryList, "dictionary.json");
+    loadFile(dictionaryList, "json/dictionary.json");
   }
 
   /**
