@@ -1,3 +1,10 @@
+import {fetchRandomWord as nerdleWord} from "./fetchRandomWord.js"
+nerdleWord().then(word => {
+  console.log(`Resolved Word: ${word}`);
+  
+
+});
+
 function handleInput(event) {
   const input = event.target;//box in which value is being entered
   const value = input.value;//character being entered in the box
