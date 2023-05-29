@@ -1,8 +1,10 @@
-import {fetchRandomWord as nerdleWord} from "./fetchRandomWord.js"
+import { fetchRandomWord as nerdleWord } from "./fetchRandomWord.js";
+import { runWordleGame } from "./runWordleGame.js";
+
 nerdleWord().then(word => {
   console.log(`Resolved Word: ${word}`);
-  
 
+  runWordleGame(word);
 });
 
 function handleInput(event) {
