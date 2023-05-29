@@ -1,17 +1,18 @@
-import { fetchRandomWord as nerdleWord } from "./fetchRandomWord.js";
+import { fetchRandomWord as nerdleWord, registerGuess} from "./modules.js";
 import { runWordleGame } from "./runWordleGame.js";
 
 nerdleWord().then(word => {
   console.log(`Resolved Word: ${word}`);
-
   runWordleGame(word);
 });
 
 function handleInput(event) {
   const input = event.target;//box in which value is being entered
   const value = input.value;//character being entered in the box
-  const correctInputForm = /[a-zA-Z]/;
-  const isLetter = correctInputForm.test(value);
+
+  const correctInputForm = /[a-zA-Z]/;//regex to match input
+  const isLetter = correctInputForm.test(value);//checking if input is a letter
+  //uppercases for uniformity
   if (isLetter)
     input.value = value.toUpperCase();
 
@@ -38,7 +39,7 @@ function handleKeyDown(event) {
   switch (key) {
     case 'Enter':
       //user guess
-      registerGuess();
+      registerGuess(event);
       break;
 
     case 'Backspace':

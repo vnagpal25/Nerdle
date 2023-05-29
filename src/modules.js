@@ -1,6 +1,6 @@
 
 import fetch from 'node-fetch';//allows http requests
-export async function fetchRandomWord() {
+async function fetchRandomWord() {
   try {
 
     //  makes HTTP request to server and returned response contains status code, headers, and the body of the response
@@ -23,4 +23,21 @@ export async function fetchRandomWord() {
   }
 }
 
-// export {fetchRandomWord};
+function registerGuess(event) {
+  const input = event.target;
+
+  const currentDiv = input.parentNode;
+  const rowInputs = Array.from(currentDiv.getElementsByClassName('letter-input'));
+
+  //properInputs is a boolean(dirty bit) seeing if all the input boxes have a letter inside them
+  let properInputs = true;
+
+  //check each element in the input array, see if it meets the condition(if so do nothing), if not(change it)
+  rowInputs.forEach((inputElement) => { 
+    if(!inputElement || !inputElement.value)
+      properInputs = inputElement && inputElement.value;
+  })
+
+  if (rowInputs.length === 5) { }
+}
+export { fetchRandomWord, registerGuess };
