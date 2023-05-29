@@ -4,7 +4,6 @@ export function runWordleGame(word) {
 
   //[...word] is equivalent to toCharArray in java
   [...word].forEach((char) => {
-    //need to replicate the getOrDefault method in javascript
     letterCounts.set(char,getOrDefault(letterCounts, char) + 1);
   });
   console.log(letterCounts);
