@@ -29,7 +29,7 @@ body {
 }
 
 input.letter-input {
-  /* caret-color: transparent; */
+  caret-color: transparent;
   /*removes the cursor when in a box*/
 }
 
