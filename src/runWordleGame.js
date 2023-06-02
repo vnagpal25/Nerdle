@@ -1,4 +1,4 @@
-export function runWordleGame(word) {
+export function populateWordHash(word) {
   let letterCounts = new Map();
 
   //[...word] is equivalent to toCharArray in Java
@@ -9,9 +9,7 @@ export function runWordleGame(word) {
     letterCounts.set(char, getOrDefault(letterCounts, char) + 1);
   });
   console.log(letterCounts);
-
-  
-
+  return letterCounts;
 }
 
 //equivalent to getOrDefault method in Java
