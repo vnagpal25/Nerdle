@@ -57,9 +57,6 @@ function handleKeyDown(event) {
 
         //need to go to the next row now
         toNextRow(input.parentNode.id);
-
-
-
       } else { }
       //invalid guess, shake write disappearing 'invalid word' and do nothing
       // newGuess = true;
@@ -80,12 +77,21 @@ function handleKeyDown(event) {
 }
 
 function toNextRow(currRowID) {
+  //string maninpulation
   const rowStr = currRowID.substring(0, 3);
   const currRowNum = parseInt(currRowID.substring(3));
 
+  //get the next rows ID
   const nextRowNum = currRowNum + 1;
   const nextRowID = rowStr + nextRowNum;
 
-  //get next div by its ID
+  if (nextRowNum <= 6) {
+    //get next div by its ID
+    const nextRowDiv = document.getElementById(nextRowID);
 
+    //getting the array of inputs from the div 
+    const nextRowInputs = Array.from(currentDiv.getElementsByClassName('letter-input'));
+    
+    nextRowInputs[0].focus();
+  }
 }
