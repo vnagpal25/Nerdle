@@ -107,7 +107,6 @@ function inWrongSpot(c, index, letterCounts, gameWord) {
 
 function populateWordHash(word) {
   let letterCounts = new Map();
-
   //[...word] is equivalent to toCharArray in Java
   // following segment of code adds to the hashmap the occurences of each letter
   // in the word, the getOrDefault method returns 0(default) if there are no keys matching the letter in the hashamp, otherwise it returns the value of the key
@@ -115,7 +114,6 @@ function populateWordHash(word) {
   [...word].forEach((char) => {
     letterCounts.set(char, getOrDefault(letterCounts, char) + 1);
   });
-  console.log(letterCounts);
   return letterCounts;
 }
 
