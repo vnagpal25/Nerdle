@@ -1,11 +1,9 @@
-import { fetchRandomWord as nerdleWord, getGuess, interpretGuess } from "./module.js";
-import { populateWordHash } from "./runWordleGame.js";
+import { fetchRandomWord as nerdleWord, getGuess, interpretGuess, populateWordHash } from "./module.js";
 let guess;
-let IsNewGuess = false;//user has guessed a new guess, my idea is that it will serve as a dirty bit
 let letterCounts;
 let gameWord;
+
 nerdleWord().then(word => {
-  console.log(`Resolved Word: ${word}`);
   letterCounts = populateWordHash(word);
   gameWord = word;
 });
@@ -51,14 +49,21 @@ function handleKeyDown(event) {
 
   switch (key) {
     case 'Enter':
-      //user guess should return updated hashmap as well as the user guess
+      //returns guess if it is valid (5 chars and english word) otherwise returns falsy empty string
       guess = getGuess(event);
-      if (guess)
-        letterCounts = interpretGuess(letterCounts, guess, gameWord, event);
-      else
-        //invalid guess, shake write disappearing 'invalid word' and do nothing
-        // newGuess = true;
-        break;
+      if (guess) {
+        //changes color of the input boxes and lock it
+        interpretGuess(letterCounts, guess, gameWord, event);
+
+        //need to go to the next row now
+        toNextRow(input.parentNode.id);
+
+
+
+      } else { }
+      //invalid guess, shake write disappearing 'invalid word' and do nothing
+      // newGuess = true;
+      break;
 
     case 'Backspace':
       //condition being checked, current input is empty and there is a previous element
@@ -72,4 +77,15 @@ function handleKeyDown(event) {
     default:
       break;
   }
+}
+
+function toNextRow(currRowID) {
+  const rowStr = currRowID.substring(0, 3);
+  const currRowNum = parseInt(currRowID.substring(3));
+
+  const nextRowNum = currRowNum + 1;
+  const nextRowID = rowStr + nextRowNum;
+
+  //get next div by its ID
+
 }
