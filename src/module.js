@@ -1,15 +1,26 @@
+const wordnikAPIKey = 'z4c3qqk32klf50fp4ca36qsgydr18gg45fsw36xci64l3jw7t';
+const wordnikAPI_URL = 'https://api.wordnik.com/v4/words.json/randomWords';
+
 function fetchRandomWord() {
-  //makes HTTP request to server and returned response contains status code, headers, and the body of the response
-  return fetch('https://api.datamuse.com/words?sp=?????&md=d&max=10000', {
-    method: 'GET' // HTTP request method is GET because we're only requesting info from the server, not sending
+  const params = new URLSearchParams({
+    api_key: wordnikAPIKey,
+    includePartOfSpeech: 'noun,verb,adjective',
+    hasDictionaryDef: true,
+    minCorpusCount: 10000,
+    minLength: 5,
+    maxLength: 5,
+    minDictionaryCount: 20,
+    limit: 1,
+  });
+
+  const getReq = `${wordnikAPI_URL}?${params}`;
+
+  return fetch(getReq, {
+    method: 'GET'
   })
-    //data is json object data extracted from the body of the response (in this case it contains 1000 words)
     .then(response => response.json())
     .then(data => {
-      //returns a random number from 0 to data.length - 1
-      const randomIndex = Math.floor(Math.random() * data.length);
-      const word = data[randomIndex].word;
-      console.log(word);
+      const word = data[0].word;
       return word;
     })
     .catch(error => {
@@ -18,16 +29,14 @@ function fetchRandomWord() {
 }
 
 function isWordValid(word) {
-  // const apiKey = 'YOUR_API_KEY'; // Replace with your Wordnik API key
-
-  // return fetch(`https://api.wordnik.com/v4/word.json/${word}/definitions?api_key=${apiKey}`)
-  //   .then(response => response.json())
-  //   .then(definitions => definitions.length > 0)
-  //   .catch(error => {
-  //     console.error('Error checking word validity:', error);
-  //     return false;
-  //   });
-  return true;
+  return fetch(`https://api.wordnik.com/v4/word.json/${word}/definitions?api_key=${wordnikAPIKey}`)
+    .then(response => response.json())
+    .then(definitions => definitions.length > 0)
+    .catch(error => {
+      console.error('Error checking word validity:', error);
+      return false;
+    });
+  // return true;
 }
 
 function getGuess(event) {
@@ -60,22 +69,30 @@ function interpretGuess(letterCounts, guess, gameWord, event) {
   const currentDiv = input.parentNode;
   const rowInputs = Array.from(currentDiv.getElementsByClassName('letter-input'));
 
+  //creating a copy because Objects are passed by reference in JS
+  const copyLetterCounts = new Map(letterCounts);
 
+
+  //decrements amount of possible yellow characters to show up in the same word
+  for (let i = 0; i < gameWord.length; i++)
+    if (inCorrectSpot(guess.charAt(i), i, gameWord))
+      copyLetterCounts.set(guess.charAt(i), copyLetterCounts.get(guess.charAt(i)) - 1);
+
+  //correct letter: green, correct letter but wrong spot: yellow, wrong letter: grey
   for (let i = 0; i < gameWord.length; i++) {
-    // if the letter is in the correct spot, then green
-    if (inCorrectSpot(guess.charAt(i), i, gameWord)) {
+    if (inCorrectSpot(guess.charAt(i), i, gameWord))
       rowInputs[i].style.backgroundColor = 'green';
-      letterCounts.set(guess.charAt(i), letterCounts.get(guess.charAt(i)) - 1);//decrements amount of possible yellow characters in a subsequent guesses
-    }
-    // if the letter is in the word, but in the wrong spot, then yellow
-    else if (inWrongSpot(guess.charAt(i), i, letterCounts, gameWord)) {
+
+    else if (inWrongSpot(guess.charAt(i), i, copyLetterCounts, gameWord))
       rowInputs[i].style.backgroundColor = 'yellow';
-    }
-    else {
+
+    else
       rowInputs[i].style.backgroundColor = 'grey';
-    }
+
   }
-  return letterCounts;
+
+  //locks the row
+  rowInputs.forEach(input => input.setAttribute('disabled', 'disabled'));
 }
 
 function inCorrectSpot(c, index, gameWord) {
@@ -88,4 +105,25 @@ function inWrongSpot(c, index, letterCounts, gameWord) {
   return gameWord.includes(String(c)) && (letterCounts.get(c) > 0);
 }
 
-export { fetchRandomWord, getGuess, interpretGuess };
+function populateWordHash(word) {
+  let letterCounts = new Map();
+
+  //[...word] is equivalent to toCharArray in Java
+  // following segment of code adds to the hashmap the occurences of each letter
+  // in the word, the getOrDefault method returns 0(default) if there are no keys matching the letter in the hashamp, otherwise it returns the value of the key
+  // This allows the hashamp to hold the occurences of each letter in the 5 letter word
+  [...word].forEach((char) => {
+    letterCounts.set(char, getOrDefault(letterCounts, char) + 1);
+  });
+  console.log(letterCounts);
+  return letterCounts;
+}
+
+//equivalent to getOrDefault method in Java
+function getOrDefault(map, key) {
+  if (map.has(key))
+    return map.get(key);
+  else
+    return 0;
+}
+export { fetchRandomWord, getGuess, interpretGuess, populateWordHash};
