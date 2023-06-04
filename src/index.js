@@ -50,16 +50,16 @@ function handleKeyDown(event) {
   switch (key) {
     case 'Enter':
       //returns guess if it is valid (5 chars and english word) otherwise returns falsy empty string
-      guess = getGuess(event);
-      if (guess) {
-        //changes color of the input boxes and lock it
-        interpretGuess(letterCounts, guess, gameWord, event);
-
-        //need to go to the next row now
-        toNextRow(input.parentNode.id);
-      } else { }
-      //invalid guess, shake write disappearing 'invalid word' and do nothing
-      // newGuess = true;
+      getGuess(event).then(guess => {
+        if (guess) {
+          //changes color of the input boxes and lock it
+          interpretGuess(letterCounts, guess, gameWord, event);
+          //need to go to the next row now
+          toNextRow(input.parentNode.id);
+        } else {
+          //invalid guess, shake write disappearing 'invalid word' and do nothing
+        }
+      })
       break;
 
     case 'Backspace':
@@ -90,8 +90,8 @@ function toNextRow(currRowID) {
     const nextRowDiv = document.getElementById(nextRowID);
 
     //getting the array of inputs from the div 
-    const nextRowInputs = Array.from(currentDiv.getElementsByClassName('letter-input'));
-    
+    const nextRowInputs = Array.from(nextRowDiv.getElementsByClassName('letter-input'));
+
     nextRowInputs[0].focus();
   }
 }

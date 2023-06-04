@@ -28,15 +28,17 @@ function fetchRandomWord() {
     });
 }
 
-function isWordValid(word) {
-  return fetch(`https://api.wordnik.com/v4/word.json/${word}/definitions?api_key=${wordnikAPIKey}`)
-    .then(response => response.json())
-    .then(definitions => definitions.length > 0)
-    .catch(error => {
-      console.error('Error checking word validity:', error);
-      return false;
-    });
-  // return true;
+async function isWordValid(word) {
+  const apiUrl = `https://api.wordnik.com/v4/word.json/${word}/definitions?api_key=${wordnikAPIKey}`;
+
+  try {
+    const response = await fetch(apiUrl);
+    const definitions = await response.json();
+    return definitions.length > 0;
+  } catch (error) {
+    console.error('Error checking word definition:', error);
+    return false;
+  }
 }
 
 function getGuess(event) {
@@ -55,13 +57,14 @@ function getGuess(event) {
       properInputs = inputElement && inputElement.value;
     guess += (inputElement.value).toLowerCase();
   })
-
-  if (properInputs && isWordValid(guess)) {
-    //lock the row for editing and analyze the word(colors)
-    console.log(guess);
-    return guess;
-  }
-  return '';
+  return isWordValid(guess).then(validWord => {
+    console.log(validWord);
+    if (properInputs && validWord) {
+      return guess; // Propagate the guess value through the promise chain
+    } else {
+      return ''; // Reject the promise if the guess is invalid
+    }
+  });
 }
 
 function interpretGuess(letterCounts, guess, gameWord, event) {
@@ -72,7 +75,7 @@ function interpretGuess(letterCounts, guess, gameWord, event) {
   //creating a copy because Objects are passed by reference in JS
   const copyLetterCounts = new Map(letterCounts);
 
-
+  console.log(guess);
   //decrements amount of possible yellow characters to show up in the same word
   for (let i = 0; i < gameWord.length; i++)
     if (inCorrectSpot(guess.charAt(i), i, gameWord))
@@ -124,4 +127,4 @@ function getOrDefault(map, key) {
   else
     return 0;
 }
-export { fetchRandomWord, getGuess, interpretGuess, populateWordHash};
+export { fetchRandomWord, getGuess, interpretGuess, populateWordHash };
