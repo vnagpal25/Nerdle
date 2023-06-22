@@ -75,7 +75,6 @@ function interpretGuess(letterCounts, guess, gameWord, event) {
   //creating a copy because Objects are passed by reference in JS
   const copyLetterCounts = new Map(letterCounts);
 
-  console.log(guess);
   //decrements amount of possible yellow characters to show up in the same word
   for (let i = 0; i < gameWord.length; i++)
     if (inCorrectSpot(guess.charAt(i), i, gameWord))

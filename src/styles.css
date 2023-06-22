@@ -36,3 +36,8 @@ input.letter-input {
 h1 {
   text-align: center;
 }
+
+#win_text{
+  opacity: 0;
+  text-align: center;
+}

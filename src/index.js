@@ -9,6 +9,7 @@ const nerdleRows = document.querySelectorAll('.input-row');
 //gets the nerdle word from WordnikAPI and populates the hashmap of letter counts also
 nerdleWord().then(word => {
   letterCounts = populateWordHash(word);
+  console.log(word);
   gameWord = word;
 });
 
@@ -90,16 +91,18 @@ function handleKeyDown(event) {
       //returns guess if it is valid (5 chars & english word) otherwise returns falsy empty string
       getGuess(event).then(guess => {
         if (guess) {
-          //win condition
-          //TODO
-          if(guess === gameWord){
-            //disable rows after the current row
-            //give a congratulations message to the user
-          }
           //changes color of the input boxes and lock it
           interpretGuess(letterCounts, guess, gameWord, event);
+
           //need to go to the next row now
-          toNextRow(input.parentNode.id);
+          if (guess !== gameWord) {
+            toNextRow(input.parentNode.id);
+          }
+          else {
+            let winBlock = document.getElementById("win_text");
+            winBlock.innerHTML += ` ${activeRow}/6 guesses!`;
+            winBlock.style.opacity = 1;
+          }
         } else {
           //invalid guess, shake write disappearing 'invalid word' and do nothing
         }
