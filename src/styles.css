@@ -37,7 +37,33 @@ h1 {
   text-align: center;
 }
 
-#win_text{
+p {
   opacity: 0;
   text-align: center;
+}
+
+.shake {
+  animation: shake-animation 0.8s ease-in-out;
+}
+
+@keyframes shake-animation {
+  0% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-10px);
+  }
+
+  50% {
+    transform: translateX(10px);
+  }
+
+  75% {
+    transform: translateX(-10px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }

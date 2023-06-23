@@ -1,4 +1,4 @@
-import { fetchRandomWord as nerdleWord, getGuess, interpretGuess, populateWordHash } from "./module.js";
+import { fetchRandomWord as nerdleWord, getGuess, interpretGuess, populateWordHash, shakeRow} from "./module.js";
 let guess;
 let letterCounts;
 let gameWord;
@@ -25,6 +25,8 @@ letterInputs.forEach(input => {
   input.oninput = handleInput;
   input.onkeydown = handleKeyDown;
 });
+
+
 
 function focusCursor() {
   const currentRow = nerdleRows[activeRow - 1];
@@ -104,6 +106,7 @@ function handleKeyDown(event) {
             winBlock.style.opacity = 1;
           }
         } else {
+            shakeRow(event);
           //invalid guess, shake write disappearing 'invalid word' and do nothing
         }
       })
@@ -151,5 +154,8 @@ function toNextRow(currRowID) {
   else {
     //the user has lost the game and hasn't gotten it within 6 tries
     //display a 'you lost' message and type out what the word was
+    let loseBlock = document.getElementById("lose_text");
+    loseBlock.innerHTML += ` ${gameWord.toUpperCase()}.`;
+    loseBlock.style.opacity = 1;
   }
 }

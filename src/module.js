@@ -126,4 +126,14 @@ function getOrDefault(map, key) {
   else
     return 0;
 }
-export { fetchRandomWord, getGuess, interpretGuess, populateWordHash };
+
+function shakeRow(event) {
+  const input = event.target;
+  const row = input.parentNode;
+  console.log(row);
+  row.classList.add('shake');
+  setTimeout(() => {
+    row.classList.remove('shake');
+  }, 1000); // Adjust the duration as needed
+}
+export { fetchRandomWord, getGuess, interpretGuess, populateWordHash, shakeRow};
