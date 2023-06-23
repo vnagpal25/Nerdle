@@ -136,4 +136,4 @@ function shakeRow(event) {
     row.classList.remove('shake');
   }, 1000); // Adjust the duration as needed
 }
-export { fetchRandomWord, getGuess, interpretGuess, populateWordHash, shakeRow};
+export { fetchRandomWord, getGuess, interpretGuess, populateWordHash, shakeRow };
