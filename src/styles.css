@@ -42,6 +42,26 @@ p {
   text-align: center;
 }
 
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.key {
+  margin-left: 10px;
+  font-size: 35px;
+  width: 40px;
+}
+
+.key:hover {
+  background-color: #aaa;
+}
+
+.key:active {
+  background-color: #888;
+}
+
 .shake {
   animation: shake-animation 0.8s ease-in-out;
 }

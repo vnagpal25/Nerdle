@@ -1,10 +1,10 @@
-import { fetchRandomWord as nerdleWord, getGuess, interpretGuess, populateWordHash, shakeRow} from "./module.js";
-let guess;
+import { fetchRandomWord as nerdleWord, getGuess, interpretGuess, populateWordHash, shakeRow } from "./module.js";
 let letterCounts;
 let gameWord;
 let activeRow = 1;// flag keeps track of current row
 const letterInputs = document.querySelectorAll('.letter-input');
 const nerdleRows = document.querySelectorAll('.input-row');
+const keyboard = document.querySelectorAll('.keyboard-row');
 
 //gets the nerdle word from WordnikAPI and populates the hashmap of letter counts also
 nerdleWord().then(word => {
@@ -26,7 +26,16 @@ letterInputs.forEach(input => {
   input.onkeydown = handleKeyDown;
 });
 
+keyboard.forEach(row => {
+  const buttons = row.querySelectorAll('.key');
+  buttons.forEach(button => {
+    button.addEventListener('click', function(event) {
+      const letter = event.target.textContent;
+      // console.log('Clicked letter:', letter);
 
+    });
+  });
+});
 
 function focusCursor() {
   const currentRow = nerdleRows[activeRow - 1];
@@ -53,6 +62,9 @@ function disableUneditableRows() {
     rowInputs.forEach(input => { input.disabled = !isEditable });
   });
 }
+
+//here add a general function that takes a letter as a input.
+//pass the output from handleInput and keyboard function to it
 
 //this function handles user input in the input elements
 function handleInput(event) {
@@ -84,6 +96,7 @@ function handleInput(event) {
   }
 }
 
+// this is for keys pressed
 function handleKeyDown(event) {
   const key = event.key;
   const input = event.target;
@@ -106,7 +119,7 @@ function handleKeyDown(event) {
             winBlock.style.opacity = 1;
           }
         } else {
-            shakeRow(event);
+          shakeRow(event);
           //invalid guess, shake write disappearing 'invalid word' and do nothing
         }
       })
