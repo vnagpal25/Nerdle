@@ -1,7 +1,8 @@
 import { fetchRandomWord as nerdleWord, getGuess, interpretGuess, populateWordHash, shakeRow } from "./module.js";
 let letterCounts;
 let gameWord;
-let activeRow = 1;// flag keeps track of current row
+let activeRowNum = 1; // flag keeps track of current row
+let activeBoxNum = 1;
 const letterInputs = document.querySelectorAll('.letter-input');
 const nerdleRows = document.querySelectorAll('.input-row');
 const keyboard = document.querySelectorAll('.keyboard-row');
@@ -29,16 +30,15 @@ letterInputs.forEach(input => {
 keyboard.forEach(row => {
   const buttons = row.querySelectorAll('.key');
   buttons.forEach(button => {
-    button.addEventListener('click', function(event) {
+    button.addEventListener('click', function (event) {
       const letter = event.target.textContent;
-      // console.log('Clicked letter:', letter);
-
+      enterInBox(letter);
     });
   });
 });
 
 function focusCursor() {
-  const currentRow = nerdleRows[activeRow - 1];
+  const currentRow = nerdleRows[activeRowNum - 1];
   const firstInput = currentRow.querySelector('.letter-input');
 
   //slight time delay to allow for the DOM to finish rendering
@@ -56,15 +56,12 @@ function disableUneditableRows() {
 
     //this boolean will be T for all elements in the activeRow, and F for all elements in other rows
     //this is because it matches the specifc row's index with the active row's index
-    const isEditable = (index === (activeRow - 1));
+    const isEditable = (index === (activeRowNum - 1));
 
     //disables all input elements in the specific row
     rowInputs.forEach(input => { input.disabled = !isEditable });
   });
 }
-
-//here add a general function that takes a letter as a input.
-//pass the output from handleInput and keyboard function to it
 
 //this function handles user input in the input elements
 function handleInput(event) {
@@ -90,6 +87,8 @@ function handleInput(event) {
       const nextBox = rowInputs[nextBoxIndex];
       nextBox.focus();
     }
+
+    activeBoxNum++;
   }
   else {
     input.value = '';
@@ -107,7 +106,7 @@ function handleKeyDown(event) {
       getGuess(event).then(guess => {
         if (guess) {
           //changes color of the input boxes and lock it
-          interpretGuess(letterCounts, guess, gameWord, event);
+          interpretGuess(letterCounts, guess, gameWord, event, keyboard);
 
           //need to go to the next row now
           if (guess !== gameWord) {
@@ -115,11 +114,12 @@ function handleKeyDown(event) {
           }
           else {
             let winBlock = document.getElementById("win_text");
-            winBlock.innerHTML += ` ${activeRow}/6 guesses!`;
+            winBlock.innerHTML += ` ${activeRowNum}/6 guesses!`;
             winBlock.style.opacity = 1;
           }
         } else {
           shakeRow(event);
+          '/TODO/'
           //invalid guess, shake write disappearing 'invalid word' and do nothing
         }
       })
@@ -128,6 +128,8 @@ function handleKeyDown(event) {
     case 'Backspace':
       //condition being checked, current input is empty and there is a previous element
       //should only go to the previous square if the current square is empty
+      if(activeBoxNum>1)
+        activeBoxNum--;
       if (input.value === '' && input.previousElementSibling) {
         const previousInput = input.previousElementSibling;
         previousInput.value = '';
@@ -148,7 +150,6 @@ function toNextRow(currRowID) {
   //get the next rows ID
   const nextRowNum = currRowNum + 1;
   const nextRowID = rowStr + nextRowNum;
-
   if (nextRowNum <= 6) {
     //get next div by its ID
     // const nextRowDiv = document.getElementById(nextRowID);
@@ -160,7 +161,7 @@ function toNextRow(currRowID) {
     // nextRowInputs[0].focus();
 
     //increments the activeRow variable and disables subsequent rows
-    activeRow++;
+    activeRowNum++;
     focusCursor();
     disableUneditableRows();
   }
@@ -171,4 +172,27 @@ function toNextRow(currRowID) {
     loseBlock.innerHTML += ` ${gameWord.toUpperCase()}.`;
     loseBlock.style.opacity = 1;
   }
+
+  activeBoxNum = 1;
+}
+
+function enterInBox(letter) {
+  //use activeRowNum and nerdleRows to get the active Row
+  const activeRow = nerdleRows[activeRowNum - 1];
+  const rowInputs = Array.from(activeRow.getElementsByClassName('letter-input'));
+
+  if (activeBoxNum <= 5) {
+    const currentBox = rowInputs[activeBoxNum - 1];
+    currentBox.value = letter;
+  }
+
+  //index of next input element within the row
+  const nextBoxIndex = activeBoxNum;
+
+  if (nextBoxIndex < rowInputs.length) {
+    const nextBox = rowInputs[nextBoxIndex];
+    nextBox.focus();
+  }
+
+  activeBoxNum++;
 }

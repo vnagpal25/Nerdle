@@ -67,7 +67,7 @@ function getGuess(event) {
   });
 }
 
-function interpretGuess(letterCounts, guess, gameWord, event) {
+function interpretGuess(letterCounts, guess, gameWord, event, keyboard) {
   const input = event.target;
   const currentDiv = input.parentNode;
   const rowInputs = Array.from(currentDiv.getElementsByClassName('letter-input'));
@@ -82,15 +82,18 @@ function interpretGuess(letterCounts, guess, gameWord, event) {
 
   //correct letter: green, correct letter but wrong spot: yellow, wrong letter: grey
   for (let i = 0; i < gameWord.length; i++) {
-    if (inCorrectSpot(guess.charAt(i), i, gameWord))
+    if (inCorrectSpot(guess.charAt(i), i, gameWord)) {
       rowInputs[i].style.backgroundColor = 'green';
-
-    else if (inWrongSpot(guess.charAt(i), i, copyLetterCounts, gameWord))
+      colorKeyboard(keyboard, guess.charAt(i), 'green');
+    }
+    else if (inWrongSpot(guess.charAt(i), i, copyLetterCounts, gameWord)) {
       rowInputs[i].style.backgroundColor = 'yellow';
-
-    else
+      colorKeyboard(keyboard, guess.charAt(i), 'yellow');
+    }
+    else {
       rowInputs[i].style.backgroundColor = 'grey';
-
+      colorKeyboard(keyboard, guess.charAt(i), 'grey');
+    }
   }
 
   //locks the row
@@ -135,5 +138,18 @@ function shakeRow(event) {
   setTimeout(() => {
     row.classList.remove('shake');
   }, 1000); // Adjust the duration as needed
+}
+
+function colorKeyboard(keyboard, letter, color) {
+  for (let i = 0; i < keyboard.length; i++) {
+    let keyboard_row = keyboard[i];
+    let keys = Array.from(keyboard_row.getElementsByClassName('key'));
+    for (let j = 0; j < keys.length; j++) {
+      if (letter.toUpperCase() === keys[j].textContent.toUpperCase()) {
+        if (keys[j].style.backgroundColor !== 'green')
+          keys[j].style.backgroundColor = color;
+      }
+    }
+  }
 }
 export { fetchRandomWord, getGuess, interpretGuess, populateWordHash, shakeRow };
