@@ -1,6 +1,8 @@
+// API url and API key for making REST calls to WordNik Server
 const wordnikAPIKey = 'z4c3qqk32klf50fp4ca36qsgydr18gg45fsw36xci64l3jw7t';
 const wordnikAPI_URL = 'https://api.wordnik.com/v4/words.json/randomWords';
 
+// fetches the word to guess from WordNik API 
 function fetchRandomWord() {
   const params = new URLSearchParams({
     api_key: wordnikAPIKey,
@@ -28,6 +30,7 @@ function fetchRandomWord() {
     });
 }
 
+// makes API call to WordNik to see if the guess was a valid word
 async function isWordValid(word) {
   const apiUrl = `https://api.wordnik.com/v4/word.json/${word}/definitions?api_key=${wordnikAPIKey}`;
 
@@ -41,6 +44,7 @@ async function isWordValid(word) {
   }
 }
 
+// takes user guess from the input boxes and returns it if it was a valid word
 function getGuess(event) {
   const input = event.target;
   const currentDiv = input.parentNode;
@@ -67,6 +71,8 @@ function getGuess(event) {
   });
 }
 
+
+// breaks down user guess and reacts
 function interpretGuess(letterCounts, guess, gameWord, event, keyboard) {
   const input = event.target;
   const currentDiv = input.parentNode;
@@ -86,7 +92,7 @@ function interpretGuess(letterCounts, guess, gameWord, event, keyboard) {
       rowInputs[i].style.backgroundColor = 'green';
       colorKeyboard(keyboard, guess.charAt(i), 'green');
     }
-    else if (inWrongSpot(guess.charAt(i), i, copyLetterCounts, gameWord)) {
+    else if (inWrongSpot(guess.charAt(i), copyLetterCounts, gameWord)) {
       rowInputs[i].style.backgroundColor = 'yellow';
       colorKeyboard(keyboard, guess.charAt(i), 'yellow');
     }
@@ -100,16 +106,20 @@ function interpretGuess(letterCounts, guess, gameWord, event, keyboard) {
   rowInputs.forEach(input => input.setAttribute('disabled', 'disabled'));
 }
 
+
+// checks if the letter is in the correct spot
 function inCorrectSpot(c, index, gameWord) {
   return c === gameWord.charAt(index);
 }
 
-function inWrongSpot(c, index, letterCounts, gameWord) {
+// checks if the letter is in the wrong spot or not
+function inWrongSpot(c, letterCounts, gameWord) {
   // if its in the wrong spot it should be in the word, and it should also not be
   // the only occurence of the letter, aka count > 0
   return gameWord.includes(String(c)) && (letterCounts.get(c) > 0);
 }
 
+// returns hashmap with letters as keys signifying the letter count
 function populateWordHash(word) {
   let letterCounts = new Map();
   //[...word] is equivalent to toCharArray in Java
@@ -130,6 +140,7 @@ function getOrDefault(map, key) {
     return 0;
 }
 
+//shakes the row when the word is incorrect
 function shakeRow(event) {
   const input = event.target;
   const row = input.parentNode;
@@ -140,6 +151,7 @@ function shakeRow(event) {
   }, 1000); // Adjust the duration as needed
 }
 
+// colors the keyboard after a valid guess
 function colorKeyboard(keyboard, letter, color) {
   for (let i = 0; i < keyboard.length; i++) {
     let keyboard_row = keyboard[i];

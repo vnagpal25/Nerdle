@@ -27,6 +27,7 @@ letterInputs.forEach(input => {
   input.onkeydown = handleKeyDown;
 });
 
+// listens to user input in each box
 keyboard.forEach(row => {
   const buttons = row.querySelectorAll('.key');
   buttons.forEach(button => {
@@ -37,6 +38,7 @@ keyboard.forEach(row => {
   });
 });
 
+// focuses cursor on the first box of the row
 function focusCursor() {
   const currentRow = nerdleRows[activeRowNum - 1];
   const firstInput = currentRow.querySelector('.letter-input');
@@ -142,6 +144,7 @@ function handleKeyDown(event) {
   }
 }
 
+// this function is for when user presses enter and we want to progress to next row
 function toNextRow(currRowID) {
   //string maninpulation
   const rowStr = currRowID.substring(0, 3);
@@ -176,6 +179,7 @@ function toNextRow(currRowID) {
   activeBoxNum = 1;
 }
 
+// this function handles user input within the boxes
 function enterInBox(letter) {
   //use activeRowNum and nerdleRows to get the active Row
   const activeRow = nerdleRows[activeRowNum - 1];
